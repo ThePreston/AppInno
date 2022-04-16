@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - App Innovatio</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="background-color:rgba(56,96,178,1); ">
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+<header>
+        <div class="container-fluid align-content-center  ">
+            <div class="text-center align-content-center">
+                <div class="card-body text-center ">
+                    <h1 >App Innovation Survey</h1>
+                    <h5>Connected Product Roadshow (Hitachi Solutions & MSFT) </h5>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <main role="main" class="pb-3" >
+            @RenderBody()
+        </main>
+    </div>
+@*
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>*@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

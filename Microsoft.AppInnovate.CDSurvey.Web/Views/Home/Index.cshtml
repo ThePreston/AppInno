@@ -1,0 +1,225 @@
+﻿@{
+    ViewData["Title"] = "App Innovation Survey";
+}
+
+    <script type="text/javascript">
+    
+    $(document).ready(function () {
+        
+        $("#Question3").on('change', function() {
+            if(this.value == "Other")
+                $('#divQuestion3Other').show();
+            else
+                $('#divQuestion3Other').hide();
+        });
+
+        $("#Question7").on('change', function() {
+            if(this.value == "Other")
+                $('#divQuestion7Other').show();
+            else
+                $('#divQuestion7Other').hide();
+        });
+
+        $("#UserRole").on('change', function() {
+              
+              switch(this.value) {
+                    case "1":
+                        $('#divQuestion5').show();
+                        $('#divQuestion7').show();
+                        
+                        $('#divQuestion4').hide();
+                        $('#divQuestion6').hide();
+                    break;
+
+                    case "2":
+                        $('#divQuestion4').show();
+                        $('#divQuestion6').show();
+                        
+                        $('#divQuestion5').hide();
+                        $('#divQuestion7').hide();
+                    break;
+
+                    default:
+                        $('#divQuestion4').show();
+                        $('#divQuestion5').show();
+                        $('#divQuestion6').show();
+                        $('#divQuestion7').show();                    
+                }
+            });
+
+
+        $('#divSubmitted').hide();
+
+        $('#divQuestion4').hide();
+        $('#divQuestion5').hide();
+        $('#divQuestion6').hide();
+        $('#divQuestion7').hide();
+        $('#divQuestion3Other').hide();
+        $('#divQuestion7Other').hide();        
+        
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+
+            var submitURL = $("#hiddenSubmitAPIURL").val();
+            
+            
+
+            var jsonData = "{ role : \""+ $("#UserRole option:selected").text() + "\"" +
+                ", connectedProduct : \""+ $("#ConnectedProduct option:selected").text() + "\"" +
+                ", stage : \""+ $("#Question3 option:selected").text() + "\"" +
+                ", stageOther : \""+ $("#divQuestion3Other").val() + "\"" +
+                ", businessChallenge : \""+ $("#BusinessChallenge option:selected").text() + "\"" +
+                ", technicalChallenge : \""+ $("#TechnicalChallenge option:selected").text() + "\"" +   
+                ", strategicChallenge : \""+ $("#StrategicChallenge option:selected").text() + "\"" +           
+                ", ioTSolution : \""+ $("#Question7 option:selected").text() + "\"" + 
+                ", ioTSolutionOther : \""+ $("#divQuestion7Other").val() + "\"}";
+
+
+            $.post(submitURL, jsonData, function (data) {
+                
+            this.disabled = true;
+        
+                    $('#divSubmitted').show();
+        
+                    $('#divMain').hide();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                $('#errorAlert').text('jqXHR = ' + jqXHR.responseText + '; textStatus = ' + textStatus + '; errorThrown = ' + errorThrown);
+                $('#errorAlert').show();
+            });
+        
+        });
+    });
+
+    </script>
+    
+<div class="container-fluid align-content-center text-center " id="divSubmitted">
+    <div class="jumbotron-fluid">
+        <h1 class="display-1"> Thank you for taking the survey</h1>        
+    </div>
+</div>
+
+<div class="container-fluid " id="divMain">    
+
+@*<div class="card-deck"></div>*@
+
+    <div id="divQuestion1" class="card shadow align-content-center rounded rounded-lg mb-3">
+        <div class="card-header " >
+            Here for:
+        </div>
+        <div class="card-body text-center">            
+            <select class="form-select form-control " aria-label="Here For" id="UserRole">
+                <option id="blank" selected> </option>    
+                <option value="1" >Technical Discussion</option>
+                <option value="2">Executive Round Table</option>
+                <option value="3">Both</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="divQuestion2"  class="card shadow align-content-center rounded rounded-lg mb-3">
+        <div class="card-header">
+            Do you already have an idea for a connected product?
+        </div>
+        <div class="card-body text-center">
+            <select class="form-select form-control" aria-label="Connected Product" id="ConnectedProduct" >
+                <option id="blank" selected> </option>      
+                <option >Yes</option>
+                <option >No</option>
+            </select>
+
+        </div>
+    </div>
+    
+    <div id="divQuestion3"  class="card shadow align-content-center rounded rounded-lg mb-3">
+        <div class="card-header ">
+            Overall we are at this stage:
+        </div>
+        <div class="card-body text-center">
+            <select class="form-select form-control" aria-label="Connected Product" id="Question3" >
+                <option id="blank" selected> </option>
+                <option >Early exploration of the tech requirements for connecting our products</option>
+                <option >Understanding role of OEM and distributors</option>
+                <option >Completing a cost model that includes cost to build and maintain</option>
+                <option >Strategic Alignment of resources and plans for our Connected Products as a Service initiative </option>
+                <option >Execution of our Connected Products as a Service initiative </option>
+                <option >Other</option>
+            </select>
+
+            <input type="text" class="form-control" id="divQuestion3Other" placeholder="List other reason">
+        </div>
+    </div>   
+    
+    <div id="divQuestion4"  class="card shadow align-content-center rounded rounded-lg mb-3">
+        <div class="card-header ">
+            Our biggest business challenge is building a
+        </div>
+        <div class="card-body text-center">
+            <select class="form-select form-control" aria-label="Connected Product" id="BusinessChallenge" >
+                <option id="blank" selected> </option>
+                <option >Value creation/revenue model</option>
+                <option >Revenue Model development</option>
+                <option >Total Addressable Market creation</option>
+                <option >Serviceable Obtainable Market</option>
+            </select>
+
+        </div>
+    </div>    
+    
+    <div id="divQuestion5"  class="card shadow align-content-center rounded rounded-lg mb-3">
+        <div class="card-header ">
+            Our biggest technicality challenge is in the area of:
+        </div>
+        <div class="card-body text-center">
+            <select class="form-select form-control" aria-label="Connected Product" id="TechnicalChallenge" >
+                <option id="blank" selected> </option>
+                <option>Sensors and Power</option>
+                <option>Communications Links</option>
+                <option>Data and Device Management</option>
+                <option>Data Echo System/Integration</option>
+                <option>Customer Facing products and services</option>
+            </select>
+
+        </div>
+    </div>   
+    
+    <div id="divQuestion6"  class="card shadow align-content-center rounded rounded-lg mb-3">
+        <div class="card-header ">
+            Strategic Perspective resource what are the biggest challenges:
+        </div>
+        <div class="card-body text-center">
+            <select class="form-select form-control" aria-label="Connected Product" id="StrategicChallenge" >
+                <option id="blank" selected> </option>
+                <option >Identified our key stakeholders in LOB </option>
+                <option >Identified our key stakeholders in IT/etc. </option>
+                <option >Identified our key technical leads & development resources </option>
+                <option >Identified our key integration Partners </option>
+            </select>
+
+        </div>
+    </div>   
+    
+    <div id="divQuestion7"  class="card shadow align-content-center rounded rounded-lg mb-3">
+        <div class="card-header ">
+           Do you have an IoT vendor/solution selected?
+        </div>
+        <div class="card-body text-center">
+            <select class="form-select form-control" aria-label="Do you have an IoT vendor/solution selected" id="Question7" >
+                <option >Yes</option>
+                <option >No</option>
+                <option >Other</option>
+            </select>
+            
+            <input type="text" class="form-control" id="divQuestion7Other" placeholder="List other reason">
+
+        </div>
+    </div>    
+
+    <div class="card align-content-center">
+        <div class="card-footer text-center">
+            <input type="button" class="btn btn-primary" id="btnSubmit" value="Submit" />
+        </div>    
+    </div>    
+    
+    <input type="hidden" id="hiddenJSON" />    
+    <input type="text" id="hiddenSubmitAPIURL" value='@Url.Action("SubmitSurvey")' style="display:none" />
+</div>
