@@ -33,31 +33,34 @@ namespace Microsoft.AppInnovate.CDSurvey.Web.Controllers
         {
             _logger.LogInformation($"SubmitSurvey");
 
-            var body = await new StreamReader(Request.Body).ReadToEndAsync();
+            try
+            {
 
-            var dataObj = JsonConvert.DeserializeObject<jsonModel>(body);
+                var body = await new StreamReader(Request.Body).ReadToEndAsync();
 
-            using var reqMessage = GetRequestMessage(dataObj); // body);
+                using var client = new HttpClient();
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config["SurveyAPIUrlHeader"]);
+                
+                var resp = await client.SendAsync(GetRequestMessage(body));
 
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config["SurveyAPIUrlHeader"]);
-            //client.DefaultRequestHeaders.Accept
-                  //.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                _logger.LogInformation($"Status Code =  {resp.StatusCode}");
+                _logger.LogInformation($"Message =  {await resp.Content.ReadAsStringAsync()}");
 
-            var resp = await client.SendAsync(reqMessage);
-
-            _logger.LogInformation($"Status Code =  {resp.StatusCode}");
-            _logger.LogInformation($"Message =  {await resp.Content.ReadAsStringAsync()}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
 
         }
 
-        private HttpRequestMessage GetRequestMessage(jsonModel dataObj)
+        private HttpRequestMessage GetRequestMessage(string bodyContent)
         {
             return new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(_config["SurveyAPIUrl"]),
-                Content = new StringContent(JsonConvert.SerializeObject(dataObj), Encoding.UTF8, "application/json")
+                Content = new StringContent(bodyContent, Encoding.UTF8, "application/json")
             };
         }
 

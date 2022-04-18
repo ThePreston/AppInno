@@ -33,10 +33,10 @@ namespace Microsoft.AppInnovate.CDSurvey.Controllers
         [HttpPost("Survey")]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Text.Plain)]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<bool>> InsertData([FromBody]jsonModel.CDSurvey surveyModel)
+        public async Task<ActionResult> InsertData([FromBody]jsonModel.CDSurvey surveyModel)
         {
             _logger.LogInformation("Entered GetProdEFData");
 
@@ -54,7 +54,8 @@ namespace Microsoft.AppInnovate.CDSurvey.Controllers
                     return BadRequest(modelEx);
                 }
 
-                return Ok(await efSvc.InsertData(surveyEFModel));
+                await efSvc.InsertData(surveyEFModel);
+                return Ok();
 
             }
             catch (Exception ex)

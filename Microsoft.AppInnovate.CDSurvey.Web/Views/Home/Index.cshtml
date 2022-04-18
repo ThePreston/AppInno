@@ -62,19 +62,20 @@
 
             var submitURL = $("#hiddenSubmitAPIURL").val();
             
+            var objJSON = new Object();
+
+            objJSON.role = $("#UserRole option:selected").text();
+            objJSON.connectedProduct = $("#ConnectedProduct option:selected").text();
+            objJSON.stage = $("#Question3 option:selected").text();
+            objJSON.stageOther  = $("#divQuestion3Other").val();
+            objJSON.businessChallenge = $("#BusinessChallenge option:selected").text();
+            objJSON.technicalChallenge  = $("#TechnicalChallenge option:selected").text();
+            objJSON.strategicChallenge  = $("#StrategicChallenge option:selected").text();
+            objJSON.ioTSolution  = $("#Question7 option:selected").text();
+            objJSON.ioTSolutionOther  = $("#divQuestion7Other").val();
+
+            var jsonData = JSON.stringify(objJSON);
             
-
-            var jsonData = "{ role : \""+ $("#UserRole option:selected").text() + "\"" +
-                ", connectedProduct : \""+ $("#ConnectedProduct option:selected").text() + "\"" +
-                ", stage : \""+ $("#Question3 option:selected").text() + "\"" +
-                ", stageOther : \""+ $("#divQuestion3Other").val() + "\"" +
-                ", businessChallenge : \""+ $("#BusinessChallenge option:selected").text() + "\"" +
-                ", technicalChallenge : \""+ $("#TechnicalChallenge option:selected").text() + "\"" +   
-                ", strategicChallenge : \""+ $("#StrategicChallenge option:selected").text() + "\"" +           
-                ", ioTSolution : \""+ $("#Question7 option:selected").text() + "\"" + 
-                ", ioTSolutionOther : \""+ $("#divQuestion7Other").val() + "\"}";
-
-
             $.post(submitURL, jsonData, function (data) {
                 
             this.disabled = true;
